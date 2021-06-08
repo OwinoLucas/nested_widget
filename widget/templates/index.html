@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load static%}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<p>Nested widget</p>
+<div class="container text-center">
+    {% load mptt_tags %}
+    <div>
+        {% recursetree properties %}
+        <div>
+            {{ node.content }}
+        </div>
+        {% endrecursetree %}
+    </div>
+    {% for property in properties %}
+    property {{ forloop.counter }} by {{ property.name }}
+    {{ property.content | linebreaks }}
+    {% empty %}
+    <h3>There are no properties available.</h3>
+    {% endfor %}
+</div>
+{% endblock content %}
