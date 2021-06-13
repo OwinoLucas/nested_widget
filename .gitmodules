@@ -1,0 +1,3 @@
+[submodule "static/tree-multiselect"]
+	path = static/tree-multiselect
+	url = https://github.com/patosai/tree-multiselect.js.git

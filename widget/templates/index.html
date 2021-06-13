@@ -3,21 +3,31 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-<p>Nested widget</p>
 <div class="container text-center">
-    {% load mptt_tags %}
-    <div>
-        {% recursetree properties %}
+    <p>Nested widget</p>
+    <select id="demo1" multiple="multiple">
+        <option value="one" data-section="top" selected="selected" data-index="3">One</option>
+        <option value="two" data-section="top" selected="selected" data-index="1">Two</option>
+        <option value="three" data-section="top" selected="selected" data-index="2" data-description="A natural number">
+            Three</option>
+        <option value="four" data-section="top">Four</option>
+        <option value="wow" data-section="top/inner/this/is/really/nested">Wow</option>
+    </select>
+    <div class="container text-center">
+        {% load mptt_tags %}
         <div>
-            {{ node.content }}
+            {% recursetree properties %}
+            <div>
+                {{ node.content }}
+            </div>
+            {% endrecursetree %}
         </div>
-        {% endrecursetree %}
+        {% for property in properties %}
+        property {{ forloop.counter }} by {{ property.name }}
+        {{ property.content | linebreaks }}
+        {% empty %}
+        <h3>There are no properties available.</h3>
+        {% endfor %}
     </div>
-    {% for property in properties %}
-    property {{ forloop.counter }} by {{ property.name }}
-    {{ property.content | linebreaks }}
-    {% empty %}
-    <h3>There are no properties available.</h3>
-    {% endfor %}
 </div>
 {% endblock content %}
