@@ -14,45 +14,53 @@
         <option value="wow" data-section="top/inner/this/is/really/nested">Wow</option>
     </select> -->
     <div class="container text-center">
-        {% load mptt_tags %}
-        <div>
-            {% recursetree properties %}
-            <div>
-                {{ node.content }}
-            </div>
-            {% if not node.is_leaf_node %}
-            <div class="children pl-2 pl-md-5">
-                {{ children }}
-            </div>
-            {% endif %}
-            {% endrecursetree %}
-        </div>
-        <!-- {% for property in properties %}
-        property {{ forloop.counter }} by {{ property.name }}
-        {{ property.content | linebreaks }}
-        {% empty %}
-        <h3>There are no properties available.</h3>
-        {% endfor %} -->
+        <div class="row">
+            <div class="col-md-6">
+                <div class="address-form">
+                    <form class="user" method="POST">
+                        {% csrf_token %}
+                        <div class="form-group row">
+                            <div class="col-sm-6 mb-3 mb-sm-0">
+                                {{ p_form.name|as_crispy_field }}
+                            </div>
+                            <div class="col-sm-6">
+                                {{ p_form.parent|as_crispy_field }}
+                            </div>
+                        </div>
+                        {% for field in form %}
+                        <div class="form-group ">
+                            {{ form.properties_link|as_crispy_field }}
+                        </div>
+                        {% endfor %}
+                        <button type="submit" class="btn btn-primary btn-user btn-block"> Post Address</button>
 
-        <div class="address-form">
-            <form class="user" method="POST">
-                {% csrf_token %}
-                <div class="form-group row">
-                    <div class="col-sm-6 mb-3 mb-sm-0">
-                        {{ p_form.name|as_crispy_field }}
-                    </div>
-                    <div class="col-sm-6">
-                        {{ p_form.parent|as_crispy_field }}
-                    </div>
+                    </form>
                 </div>
-                {% for field in form %}
-                <div class="form-group ">
-                    {{ form.properties_link|as_crispy_field }}
+            </div>
+            <div class="col-md-6">
+                {% load mptt_tags %}
+                <div>
+                    {% recursetree properties %}
+                    <div>{{ node.content }}</div>
+                    <!-- <div>{{ node.level }}</div> -->
+                    {% if not node.is_leaf_node %}
+                    <div class="children pl-2 pl-md-5">
+                        {{ children }}
+                    </div>
+                    {% endif %}
+                    {% endrecursetree %}
                 </div>
+                {% for property in properties %}
+                <span style="font-weight:bolder;">{{ property.name }}
+                </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<em>{{ forloop.counter }} property</em>
+                {{ property.content | linebreaks }}
+                {% empty %}
+                <h3>There are no properties available.</h3>
                 {% endfor %}
-                <button type="submit" class="btn btn-primary btn-user btn-block"> Post Address</button>
 
-            </form>
+            </div>
         </div>
+
+
     </div>
     {% endblock content %}

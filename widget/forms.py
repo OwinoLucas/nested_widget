@@ -14,6 +14,8 @@ class PropertyForm(forms.ModelForm):
 
 
 class AddressForm(forms.ModelForm):
+    # properties_link = forms.MultipleChoiceField(
+    #     required=False, widget=forms.CheckboxSelectMultiple())
 
     class Meta:
         model = Address
