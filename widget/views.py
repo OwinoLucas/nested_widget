@@ -15,6 +15,41 @@ from .models import *
 # Create your views here.
 def home(request):
     properties = Properties.objects.all()
+    if request.method == 'POST':
+        p_form = PropertyForm(request.POST)
+        form = AddressForm(request.POST)
+        if p_form.is_valid() and form.is_valid():
+            p_form.save()
+            form.save()
+            message.success(
+                request, 'post created successfully!')
+            return redirect('home')
+    else:
+        p_form = PropertyForm()
+        form = AddressForm()
 
-    context = {'properties': properties}
+    context = {'properties': properties,
+               'p_form': p_form,
+               'form': form
+               }
     return render(request, 'index.html', context)
+
+# def single_property(request,property):
+#     property = get_object_or_404(Properties)
+#     addresses = property.address.get()
+#     if request.method == 'POST':
+#         form = AddressForm(request.POST)
+#         if form.is_valid():
+#             address = form.save(commit=False)
+#             address.property = property
+#             address.save()
+#             message.success(
+#                 request, 'post created successfully!')
+#             return redirect('home')
+#     else:
+#         form = AddressForm()
+
+#     context = {'property': property,
+#                 'form':form
+#     }
+#     return render(request, 'property.html', context)

@@ -3,16 +3,16 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-<div class="container text-center">
-    <p>Nested widget</p>
-    <select id="demo1" multiple="multiple">
+<div class="container text-center mt-4">
+    <h2>Address Form</h2>
+    <!-- <select id="demo1" multiple="multiple">
         <option value="one" data-section="top" selected="selected" data-index="3">One</option>
         <option value="two" data-section="top" selected="selected" data-index="1">Two</option>
         <option value="three" data-section="top" selected="selected" data-index="2" data-description="A natural number">
             Three</option>
         <option value="four" data-section="top">Four</option>
         <option value="wow" data-section="top/inner/this/is/really/nested">Wow</option>
-    </select>
+    </select> -->
     <div class="container text-center">
         {% load mptt_tags %}
         <div>
@@ -20,14 +20,39 @@
             <div>
                 {{ node.content }}
             </div>
+            {% if not node.is_leaf_node %}
+            <div class="children pl-2 pl-md-5">
+                {{ children }}
+            </div>
+            {% endif %}
             {% endrecursetree %}
         </div>
-        {% for property in properties %}
+        <!-- {% for property in properties %}
         property {{ forloop.counter }} by {{ property.name }}
         {{ property.content | linebreaks }}
         {% empty %}
         <h3>There are no properties available.</h3>
-        {% endfor %}
+        {% endfor %} -->
+
+        <div class="address-form">
+            <form class="user" method="POST">
+                {% csrf_token %}
+                <div class="form-group row">
+                    <div class="col-sm-6 mb-3 mb-sm-0">
+                        {{ p_form.name|as_crispy_field }}
+                    </div>
+                    <div class="col-sm-6">
+                        {{ p_form.parent|as_crispy_field }}
+                    </div>
+                </div>
+                {% for field in form %}
+                <div class="form-group ">
+                    {{ form.properties_link|as_crispy_field }}
+                </div>
+                {% endfor %}
+                <button type="submit" class="btn btn-primary btn-user btn-block"> Post Address</button>
+
+            </form>
+        </div>
     </div>
-</div>
-{% endblock content %}
+    {% endblock content %}
